@@ -13,7 +13,11 @@ async function getMovies() {
             query: searchValue.value ? searchValue.value : 'gay' 
         }
     });
-    movies.value = data;
+    
+    setTimeout(() => {
+        movies.value = data;
+        searchValue.value = '';
+    }, 400);
 }
 
 onMounted(getMovies);
