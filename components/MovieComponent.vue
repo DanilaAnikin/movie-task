@@ -10,10 +10,10 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="cursor-pointer rounded-lg mb-4" @click="emit('openMovie', movie)">
-        <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" class="w-96 rounded-l-lg border-2 border-slate-800" />
-        <div class="pl-3 mt-2 flex flex-col justify-between max-w-sm w-fit">
-            <div class="mt-2 max-w-sm w-fit">
+    <div class="cursor-pointer rounded-lg mb-4 max-w-xs" @click="emit('openMovie', movie)">
+        <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" class="rounded-l-lg border-2 border-slate-800" />
+        <div class="pl-3 mt-2 flex flex-col justify-between">
+            <div class="mt-2">
                 <span class="block text-lg font-bold mb-1 text-ellipsis">{{ movie.original_title }}</span>
                 <span class="text-xs">{{ movie.vote_average }}/10</span>
                 <span class="text-xs">Ratings: {{ movie.vote_count }}</span>
