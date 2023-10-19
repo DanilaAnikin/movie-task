@@ -17,7 +17,7 @@ async function getMovies() {
     setTimeout(() => {
         movies.value = data;
         searchValue.value = '';
-    }, 400);
+    }, 200);
 }
 
 onMounted(getMovies);
