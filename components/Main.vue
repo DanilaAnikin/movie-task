@@ -13,11 +13,8 @@ async function getMovies() {
             query: searchValue.value ? searchValue.value : 'BROS' 
         }
     });
-    
-    setTimeout(() => {
-        movies.value = data;
-        searchValue.value = '';
-    }, 200);
+    movies.value = data;
+    searchValue.value = '';
 }
 
 onMounted(getMovies);
