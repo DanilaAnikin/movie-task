@@ -17,5 +17,5 @@ export default defineEventHandler(async(event)  => {
         }
     });
 
-    return (await response.json()).results as Movie[];
+    return (await response.json()).results.filter((movie: Movie) => movie.poster_path != null && movie.overview != "") as Movie[];
 })

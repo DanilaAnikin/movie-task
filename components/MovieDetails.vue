@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-    <div class="mx-20 my-20 w-fit rounded-xl flex gap-20">
+    <div class="mx-20 mt-60 w-fit rounded-xl flex gap-20">
         <img :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`" class="rounded-2xl">
         <div class="flex flex-col justify-between">
             <div class="flex flex-col gap-6">
