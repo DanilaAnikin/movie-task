@@ -36,7 +36,7 @@ const getGenreNames = computed(() => {
         <div class="pl-3 mt-2 flex flex-col justify-between">
             <div class="mt-2">
                 <span class="block text-lg font-bold mb-1 text-ellipsis overflow-hidden">{{ movie.original_title }}</span>
-                <span class="text-xs">{{movie.genre_ids.length > 1 ? 'Genres: ' : 'Genre: ' }} {{ getGenreNames.join(', ') }}</span>
+                <span class="text-xs">{{movie.genre_ids.length > 1 ? 'Genres: ' : movie.genre_ids.length == 0 ? '' : 'Genre: ' }} {{ getGenreNames.join(', ') }}</span>
             </div>
         </div>
     </div>
