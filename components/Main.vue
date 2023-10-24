@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Movie } from '~/types/movie';
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
+import { Genre } from '~/types/genre';
 
 const searchValue = ref<string>("");
-const movies = ref<Movie[] | null>(null);
+const movies = ref<Movie[]>([]);
+const genres = ref<Genre[]>([]);
 const movieOpened = ref<boolean>(false);
 const openedMovie = ref<Movie>();
 
@@ -17,12 +19,20 @@ async function getMovies() {
     searchValue.value = '';
 }
 
-onMounted(getMovies);
+async function getGenres() {
+    const data: Genre[] = await $fetch('/api/genres');
+    genres.value = data;
+}
+
+onMounted(() => {
+    getMovies();
+    getGenres();
+});
 </script>
 
 <template>
     <div v-if="!movieOpened">
-        <span class="w-full flex justify-center text-5xl font-bold py-8 text-slate-100">
+        <span class="w-full flex justify-center text-5xl font-bold py-6 text-slate-100">
             Movies
         </span>
         <div class="flex justify-center items-center h-fit mt-3 mb-10">
@@ -34,11 +44,15 @@ onMounted(getMovies);
                 v-for="movie in movies"
                 :key="movie.id"
                 :movie="movie"
+                :genres="genres!"
                 @open-movie="movieOpened = true; openedMovie=$event"
             />
         </div>
     </div>
     <div v-else>
-        <MovieDetails :movie="openedMovie" />
+        <MovieDetails
+            :movie="openedMovie!"
+            :genres="genres!"
+        />
     </div>
 </template>
