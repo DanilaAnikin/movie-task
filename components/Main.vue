@@ -2,6 +2,11 @@
 import { Movie } from '~/types/movie';
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
 import { Genre } from '~/types/genre';
+import { User } from '~/types/user';
+
+const props = defineProps<{
+    user: User
+}>();
 
 const searchValue = ref<string>("");
 const movies = ref<Movie[]>([]);
@@ -33,7 +38,7 @@ onMounted(() => {
 <template>
     <div v-if="!movieOpened">
         <span class="w-full flex justify-center text-5xl font-bold py-6 text-slate-100">
-            Movies
+            MyMovies
         </span>
         <div class="flex justify-center items-center h-fit mt-3 mb-10">
             <input type="text" v-on:keyup.enter="getMovies" v-model="searchValue" placeholder="Search..." class="bg-slate-400 rounded p-2 placeholder:text-slate-900 text-slate-900 focus:outline-none focus:bg-slate-300">
