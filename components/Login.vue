@@ -1,19 +1,40 @@
 <script setup lang="ts">
-import { UserData } from '~/types/user';
+import {useUser} from '~/store/idkNazev';
 
-const emit = defineEmits<{
-    (e: 'login', userData: UserData): void,
-    (e: 'signUp', userData: UserData): void
-}>();
+const userStore = useUser();
 
-const signIn = ref<boolean>(true);
+const signInPage = ref<boolean>(true);
 
 const email = ref<string>('');
 const password = ref<string>('');
 
-const login = () => {
-    signIn ? emit('login', { email: email.value, password: password.value }) : emit('signUp', { email: email.value, password: password.value })
+const token = ref<string>('');
+
+async function login() {
+  await userStore.login(email.value, password.value);
+
+  console.log(userStore.user);
+  // const data = await $fetch(signInPage.value ? '/api/auth/login' : '/api/auth/register', {
+  //   method: 'POST',
+  //   body: {
+  //     email: email.value,
+  //     password: password.value,
+  //   }
+  // });
+
+  // token.value = data;
+  // Cookies.set(UserCookies.TOKEN, token.value, { expires: 30 });
 }
+
+onMounted(async () => {
+  if(userStore.token){
+    await userStore.loadUser();
+    console.log(userStore.user.value);
+  }
+})
+// const checkLogin = () => {
+//   return Cookies.get('token');
+// }
 
 </script>
 
@@ -23,7 +44,7 @@ const login = () => {
 
       <div class="flex flex-col gap-3">
         <span class="text-slate-100 text-2xl font-bold">
-          {{ signIn ? 'Sign in' : 'Create account' }}
+          {{ signInPage ? 'Sign in' : 'Create account' }}
         </span>
         <span class="text-slate-300 text-sm">
           Search for your favourite movies
@@ -51,16 +72,16 @@ const login = () => {
       </div>
 
       <div class="flex justify-center">
-        <button @click="login()" :class="`${email != '' && password !== '' && password.length >= 5 && password.length <= 20 ? 'bg-blue-800 hover:bg-blue-700' : 'bg-blue-950 cursor-not-allowed'} h-fit py-3 px-6 rounded-xl w-fit`">
+        <button @click="login" :class="`${email != '' && password !== '' && password.length >= 5 && password.length <= 20 ? 'bg-blue-800 hover:bg-blue-700' : 'bg-blue-950 cursor-not-allowed'} h-fit py-3 px-6 rounded-xl w-fit`">
           <span class="text-slate-100 font-bold">
-            {{ signIn ? 'Sign in' : 'Create account' }}
+            {{ signInPage ? 'Sign in' : 'Create account' }}
           </span>
         </button>
       </div>
 
       <div class="flex text-slate-200 justify-center gap-2 text-sm">
-        <span>{{ signIn ? 'New to MyMovies?' : 'Have an account?' }}</span>
-        <span @click="signIn = !signIn" class="cursor-pointer text-blue-500 font-semibold">{{ signIn ? 'Join now!' : 'Sign in' }}</span>
+        <span>{{ signInPage ? 'New to MyMovies?' : 'Have an account?' }}</span>
+        <span @click="signInPage = !signInPage" class="cursor-pointer text-blue-500 font-semibold">{{ signInPage ? 'Join now!' : 'Sign in' }}</span>
       </div>
 
     </div>

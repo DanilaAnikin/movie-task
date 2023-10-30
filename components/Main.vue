@@ -4,10 +4,6 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
 import { Genre } from '~/types/genre';
 import { User } from '~/types/user';
 
-const props = defineProps<{
-    user: User
-}>();
-
 const searchValue = ref<string>("");
 const movies = ref<Movie[]>([]);
 const genres = ref<Genre[]>([]);
