@@ -1,41 +1,29 @@
 <script setup lang="ts">
-import {useUser} from '~/store/idkNazev';
+import { EmitFlags } from 'typescript';
+import { useUser } from '~/store/idkNazev';
 
 const userStore = useUser();
+
+const emit = defineEmits(['logged-successfully']);
 
 const signInPage = ref<boolean>(true);
 
 const email = ref<string>('');
 const password = ref<string>('');
 
-const token = ref<string>('');
-
 async function login() {
   await userStore.login(email.value, password.value);
-
-  console.log(userStore.user);
-  // const data = await $fetch(signInPage.value ? '/api/auth/login' : '/api/auth/register', {
-  //   method: 'POST',
-  //   body: {
-  //     email: email.value,
-  //     password: password.value,
-  //   }
-  // });
-
-  // token.value = data;
-  // Cookies.set(UserCookies.TOKEN, token.value, { expires: 30 });
+  if(userStore.token) {
+    await userStore.loadUser();
+    emit('logged-successfully')
+  }
 }
 
 onMounted(async () => {
   if(userStore.token){
     await userStore.loadUser();
-    console.log(userStore.user.value);
   }
-})
-// const checkLogin = () => {
-//   return Cookies.get('token');
-// }
-
+});
 </script>
 
 <template>

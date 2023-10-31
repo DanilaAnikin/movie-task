@@ -2,7 +2,11 @@
 import { Movie } from '~/types/movie';
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
 import { Genre } from '~/types/genre';
-import { User } from '~/types/user';
+import { useUser } from '~/store/idkNazev';
+
+const userStore = useUser();
+
+const emit = defineEmits(['not-logged'])
 
 const searchValue = ref<string>("");
 const movies = ref<Movie[]>([]);
@@ -25,9 +29,14 @@ async function getGenres() {
     genres.value = data;
 }
 
-onMounted(() => {
+onMounted(async() => {
     getMovies();
     getGenres();
+    if(userStore.token){
+        await userStore.loadUser();
+    } else {
+        emit('not-logged')
+    }
 });
 </script>
 
