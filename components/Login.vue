@@ -12,10 +12,14 @@ const email = ref<string>('');
 const password = ref<string>('');
 
 async function login() {
+  if(password.value.length < 5 || password.value.length > 20) {
+    return;
+  }
+
   await userStore.login(email.value, password.value);
   if(userStore.token) {
     await userStore.loadUser();
-    emit('logged-successfully')
+    emit('logged-successfully');
   }
 }
 
