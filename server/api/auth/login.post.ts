@@ -6,31 +6,56 @@ import jwt from 'jsonwebtoken';
 export default defineEventHandler(async(event) => {
     const {email, password}: {email: string, password: string} = await readBody(event);
 
-    const user = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findUnique({
         where: {
             email,
-        },
-        select: {
-            id: true,
-            email: true,
-            password: true,
         }
     });
 
-    if(!user){
-        return;
+    if(existingUser){
+        const user = await prisma.user.findUnique({
+            where: {
+                email,
+            },
+            select: {
+                id: true,
+                email: true,
+                password: true,
+            }
+        });
+
+        const verified = await bcrypt.compare(password, user.password);
+
+        if(!verified){
+            return "Stooopid";
+        }
+
+        const userJwt = jwt.sign({
+            id: user.id,
+            email: user.email
+        }, 'anaikin');
+
+        return userJwt;   
+    } else {
+        const newPasswordHash =  await bcrypt.hash(password, 10);
+
+        const newUser = await prisma.user.create({
+            data: {
+                email,
+                password: newPasswordHash,
+            },
+            select: {
+                id: true,
+                email: true,
+                password: true,
+            }
+        });
+
+        const userJwt = jwt.sign({
+            id: newUser.id,
+            email: newUser.email
+        }, 'anaikin');
+
+        return userJwt;
     }
-
-    const verified = await bcrypt.compare(password, user.password);
-
-    if(!verified){
-        return "Stooopid";
-    }
-
-    const userJwt = jwt.sign({
-        id: user.id,
-        email: user.email
-    }, 'anaikin');
-
-    return userJwt;
 })

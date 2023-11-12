@@ -25,7 +25,7 @@ onMounted(async() => {
             <span class="text-3xl font-bold">
                 Me
             </span>
-            <HomeIcon class="h-10 w-10 text-slate-200" @click="$emit('go-main')" />
+            <HomeIcon class="h-10 w-10 text-slate-200 cursor-pointer" @click="$emit('go-main')" />
         </div>
         <div class="w-full flex justify-center mt-40 flex-col items-center gap-4">
             <span class="text-xl">
