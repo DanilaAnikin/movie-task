@@ -18,7 +18,6 @@ export default defineEventHandler(async(event)  => {
     });
 
     const data = await response.json();
-    console.log(data);
 
     return data.results.filter((movie: Movie) => movie.poster_path != null && movie.overview != "") as Movie[];
 });
