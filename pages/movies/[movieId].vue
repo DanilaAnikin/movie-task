@@ -1,27 +1,19 @@
-<script setup lang=ts>
-import { Movie } from '~/types/movie';
+<script setup lang="ts">
 import { Genre } from '~/types/genre';
+import { Movie } from '~/types/genre';
+import { reactive, computed, ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
-const emit = defineEmits(['close']);
-
-const props = defineProps<{
-    movie: Movie,
-    genres: Genre[], 
-}>()
-
-let genreNames = reactive<string[]>([])
-const getGenreNames = computed(() => {
-    for (let i=0; i<props.genres.length; i++) {
-        for(let j=0; j<props.movie.genre_ids.length; j++) {
-            if(props.movie.genre_ids[j] == props.genres[i].id){
-                genreNames.push(props.genres[i].name);
-            }
-        }
+const route = useRoute();
+const movieId = route.params.movieId;
+const {data:movie} = await useFetch('/api/movie', {
+    query: {
+        id: movieId
     }
-    return genreNames;
-})
-</script>
+});
 
+
+</script>
 <template>
     <div class="ml-10 mt-60 w-fit h-fit rounded-xl flex pr-8 gap-10 flex-wrap mb-20">
         <img :src="`https://image.tmdb.org/t/p/w500${movie?.poster_path}`" class="border border-slate-600 rounded-l-3xl rounded-r-lg">
@@ -31,7 +23,7 @@ const getGenreNames = computed(() => {
                 <span class="text-2xl text-slate-300">{{ movie?.overview }}</span>
             </div>
             <div class="flex justify-between items-center flex-wrap">
-                <span class="text-2xl">{{ getGenreNames.join(', ') }}</span>
+                <span class="text-xl">{{ movie.genres.map(item => item.name).join(', ') }}</span>
                 <div class="flex gap-6 flex-wrap">
                     <span class="text-lg">Rating average: {{ movie?.vote_average }}/10</span>
                     <span class="text-lg">Total ratings: {{ movie?.vote_count }}</span>

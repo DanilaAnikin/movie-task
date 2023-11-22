@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { HomeIcon, EyeIcon } from '@heroicons/vue/24/outline';
-import { useUser } from '~/store/idkNazev';
+import { definePageMeta } from 'nuxt/dist/pages/runtime';
+import { useUser } from '../store/idkNazev';
+import { onMounted, ref } from 'vue';
 
 const userStore = useUser();
 
@@ -16,7 +18,6 @@ onMounted(async() => {
         user.value = userStore.user;
     }
 })
-
 </script>
 
 <template>

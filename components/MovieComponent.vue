@@ -37,7 +37,7 @@ const getGenreNames = computed(() => {
                 <span class="block text-lg font-bold mb-1 text-ellipsis overflow-hidden mt-1">{{ movie.original_title }}</span>
                 <span class="movie-text text-xs">{{ movie.genre_ids.length > 1 ? 'Genres: ' : movie.genre_ids.length == 0 ? '' : 'Genre: ' }} {{ getGenreNames.join(', ') }}</span>
                 <span class="movie-text text-xs flex flex-wrap mt-2">{{ movie.overview }}</span>
-                <div class="movie-text-like justify-between mt-2 w-full">
+                <div class="movie-text-like justify-between mt-2 px-2 pb-1 w-full">
                     <span class="text-sm">Rating: {{ movie.vote_average }}</span>
                     <HeartIcon class="h-6 w-6 text-slate-100 hover:text-red-400" />
                 </div>
