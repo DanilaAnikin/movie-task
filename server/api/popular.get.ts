@@ -1,5 +1,3 @@
-import { Movie } from "~/types/movie";
-
 export default defineEventHandler(async(event)  => {
     const myAutoarization = process.env.MY_AUTOARIZATION;
 

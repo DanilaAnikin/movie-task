@@ -20,15 +20,8 @@ model Like {
   userId      Int
   movieId     Int
   user        User      @relation(fields: [userId], references: [id])
-  movie       Movie     @relation(fields: [movieId], references: [id])
 
   @@index([userId])
   @@index([movieId])
   @@unique([userId, movieId])
-}
-
-model Movie {
-  id          Int       @id
-  likesCount  Int
-  likes       Like[]
 }

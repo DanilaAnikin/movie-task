@@ -2,15 +2,46 @@
 import { useRoute } from 'vue-router';
 import { HomeIcon } from '@heroicons/vue/24/outline';
 import { HeartIcon } from '@heroicons/vue/24/solid';
+import { useUser } from '../../store/idkNazev';
 
 const route = useRoute();
+const userStore = useUser();
+
 const movieId = route.params.movieId;
-const {data:movie} = await useFetch('/api/movie', {
+const { data: movie } = await useFetch('/api/movie', {
     query: {
         id: movieId
     }
 });
 
+const { data: likes } = await useFetch('/api/likes', {
+    query: {
+        token: userStore.token
+    }
+});
+
+const likedMovies = ref<number[]>([]);
+
+for(let i=0; i<likes.value.length; i++) {
+    likedMovies.value.push(likes.value[i].movieId);
+}
+
+const liked = ref<boolean>(likedMovies.value.includes(movie.value.id));
+
+async function postLike() {
+    liked.value = !liked.value;
+
+    const token = userStore.token;
+    const movieId = movie.value.id;
+
+    const data = await $fetch('/api/auth/like', {
+        method: 'POST',
+        body: {
+            movieId,
+            token
+        }
+    });
+}
 
 </script>
 <template>
@@ -23,7 +54,10 @@ const {data:movie} = await useFetch('/api/movie', {
             <div class="flex flex-col gap-6">
                 <div class="flex justify-between items-center">
                     <span class="text-4xl font-bold">{{ movie?.original_title }}</span>
-                    <HeartIcon :class="`h-10 w-10 ${ true ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'}`" />
+                    <div class="flex gap-1">
+                        <span></span>
+                        <HeartIcon @click="postLike" :class="`h-10 w-10 cursor-pointer ${ liked ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'}`" />
+                    </div>
                 </div>
                 <span class="text-2xl text-slate-300">{{ movie?.overview }}</span>
             </div>

@@ -49,12 +49,12 @@ onMounted(async() => {
             </div>
         </div>
         <div class="flex-wrap flex justify-center gap-4">
-            <NuxtLink v-for="movie in movies" :key="movie.id" :to="`/movies/${movie.id}`">
-                <MovieComponent
-                    :movie="movie"
-                    :genres="genres!"
-                />
-            </NuxtLink>
+            <MovieComponent
+                v-for="movie in movies"
+                :key="movie.id"
+                :movie="movie"
+                :genres="genres!"
+            />
         </div>
     </div>
 </template>

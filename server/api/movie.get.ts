@@ -1,7 +1,5 @@
-import { Movie } from "~/types/movie";
-
 export default defineEventHandler(async(event)  => {
-    const {id} = getQuery(event);
+    const { id } = getQuery(event);
 
     const myAutoarization = process.env.MY_AUTOARIZATION;
 
