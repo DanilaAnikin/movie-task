@@ -13,7 +13,6 @@ const changePassword = () => {
     }
 
     alert(password.value);
-
 }
 </script>
 <template>

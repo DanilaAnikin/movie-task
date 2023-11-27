@@ -15,5 +15,5 @@ export default defineEventHandler(async(event) => {
             email: true
         }
     });
-    return foundUser
+    return foundUser;
 })

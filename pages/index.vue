@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/vue/24/outline';
+import { HeartIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline';
 import { useUser } from '../store/idkNazev';
 
 const userStore = useUser();
@@ -7,6 +7,7 @@ const userStore = useUser();
 const emit = defineEmits(['not-logged'])
 
 const searchValue = ref<string>("");
+
 const {data: movies} = await useFetch('/api/popular');
 const {data: genres} = await useFetch('/api/genres');
 
@@ -38,13 +39,13 @@ onMounted(async() => {
                 MyMovies
             </span>
             <div class="flex items-center gap-2">
-                <input type="text" v-on:keyup.enter="getMovies" v-model="searchValue" placeholder="Search..." class="bg-slate-400 rounded p-2 placeholder:text-slate-900 text-slate-900 focus:outline-none focus:bg-slate-300">
-                <MagnifyingGlassIcon class="h-6 w-6 cursor-pointer hover:text-blue-400" @click="getMovies" />
+                <input type="text" v-on:keyup.enter="getMovies" v-model="searchValue" placeholder="Search..." class="bg-slate-300 rounded p-2 w-60 placeholder:text-slate-900 text-black font-mono focus:outline-none focus:bg-slate-200">
+                <PaperAirplaneIcon class="h-9 w-9 p-1 hover:bg-slate-300 hover:bg-opacity-30 rounded-lg cursor-pointer hover:text-blue-400" @click="getMovies" />
             </div>
             <div class="flex">
-                <nuxt-link to="/UserComponent">
-                    <UserCircleIcon class="h-10 w-10 text-slate-200 cursor-pointer" />
-                </nuxt-link>
+                <NuxtLink to="/FavouriteMovies">
+                    <HeartIcon class="h-12 w-12 text-slate-200 cursor-pointer hover:bg-slate-400 hover:bg-opacity-30 hover:text-red-500 rounded-xl p-1" />
+                </NuxtLink>
             </div>
         </div>
         <div class="flex-wrap flex justify-center gap-4">
