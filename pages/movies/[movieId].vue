@@ -19,11 +19,13 @@ const { data: likes } = await useFetch('/api/likes', {
         token: userStore.token
     }
 });
-
+console.log(likes.value);
 const likedMovies = ref<number[]>([]);
 
-for(let i=0; i<likes.value.length; i++) {
-    likedMovies.value.push(likes.value[i].movieId);
+if(likes.value.length != 0) {
+    for(let i=0; i<likes.value.length; i++) {
+        likedMovies.value.push(likes.value[i].movieId);
+    }
 }
 
 const liked = ref<boolean>(likedMovies.value.includes(movie.value.id));

@@ -31,7 +31,7 @@ onMounted(async() => {
                 <MovieComponent
                     :movie="movie"
                     :genres="genres!"
-                />
+                />  
             </NuxtLink>
         <!-- {{ user.likes.map((like, index) => { like.movieId == movies[index].id }) }} -->
         </div>
