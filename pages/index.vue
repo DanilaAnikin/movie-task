@@ -34,7 +34,7 @@ onMounted(async() => {
 
 <template>
     <div v-if="!movieOpened">
-        <div class="flex justify-between px-8 h-32 items-center">
+        <div class="flex justify-between px-8 h-32 items-center flex-wrap">
             <span class="flex text-4xl font-bold text-slate-100">
                 MyMovies
             </span>
