@@ -34,7 +34,7 @@ const { data: likes } = await useFetch('/api/likes', {
 
 const likedMovies = ref<number[]>([]);
 
-if(likes.value.length != 0) {
+if(likes.value){
     for(let i=0; i<likes.value.length; i++) {
         likedMovies.value.push(likes.value[i].movieId);
     }
