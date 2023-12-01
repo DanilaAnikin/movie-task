@@ -57,6 +57,14 @@ async function postLike() {
     });
 }
 
+onMounted(async() => {
+    if(userStore.token){
+        await userStore.loadUser();
+    } else {
+        emit('not-logged');
+    }
+});
+
 </script>
 
 <template>
@@ -80,7 +88,7 @@ async function postLike() {
                 <span class="movie-text text-xs">{{ movie.genre_ids.length > 1 ? 'Genres: ' : movie.genre_ids.length == 0 ? '' : 'Genre: ' }} {{ getGenreNames.join(', ') }}</span>
                 <span class="movie-text text-xs flex flex-wrap mt-2">{{ movie.overview }}</span>
                 <div class="movie-text-like justify-between mt-2 w-full">
-                    <span v-if="movie.vote_average != 0" class="flex font-bold text-lg gap-1 items-center">{{ movie.vote_average.toFixed(1) }} <StarIcon class="h-5 w-5 text-yellow-500" /></span>
+                    <span v-if="movie.vote_average != 0" class="flex font-bold text-lg gap-1 items-center">{{ movie.vote_average.toFixed(1) }} <StarIcon :class="`h-5 w-5 ${ parseInt(movie.vote_average.toFixed(1), 10) >= 7 ? 'text-yellow-500' : parseInt(movie.vote_average.toFixed(1), 10) >= 6 ? 'text-slate-400' : 'text-yellow-800'}`" /></span>
                     <HeartIcon @click="postLike()" :class="`h-6 w-6 ${ liked ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'} cursor-pointer`" />
                 </div>
             </div>
