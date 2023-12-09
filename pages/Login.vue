@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { EmitFlags } from 'typescript';
 import { useUser } from '~/store/idkNazev';
 
 const userStore = useUser();
-
-const emit = defineEmits(['logged-successfully']);
+const router = useRouter();
 
 const signInPage = ref<boolean>(true);
 
@@ -19,13 +17,14 @@ async function login() {
   await userStore.login(email.value, password.value);
   if(userStore.token) {
     await userStore.loadUser();
-    emit('logged-successfully');
+    router.push('/');
   }
 }
 
 onMounted(async () => {
   if(userStore.token){
     await userStore.loadUser();
+    router.push('/');
   }
 });
 </script>

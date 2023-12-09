@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 // import Bun from 'bun';
 
 export default defineEventHandler(async(event) => {
-    const {email, password}: {email: string, password: string} = await readBody(event);
+    const { email, password }: {email: string, password: string} = await readBody(event);
 
     const existingUser = await prisma.user.findUnique({
         where: {

@@ -7,8 +7,8 @@ const userStore = useUser();
 
 const user = ref<{ id: number, email: string } | null>(null);
 
-const {data: movies} = await useFetch('/api/popular');
-const {data: genres} = await useFetch('/api/genres');
+const { data: movies } = await useFetch('/api/popular');
+const { data: genres } = await useFetch('/api/genres');
 
 onMounted(async() => {
     if(userStore.token){

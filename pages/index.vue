@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { HeartIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline';
 import { useUser } from '../store/idkNazev';
+import { useRouter } from 'vue-router';
 
 const userStore = useUser();
+const router = useRouter();
 
-const emit = defineEmits(['not-logged'])
+const emit = defineEmits(['not-logged']);
 
 const searchValue = ref<string>("");
 
@@ -27,7 +29,7 @@ onMounted(async() => {
     if(userStore.token){
         await userStore.loadUser();
     } else {
-        emit('not-logged');
+        router.push('/Login');
     }
 });
 </script>
