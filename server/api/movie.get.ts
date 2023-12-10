@@ -1,4 +1,4 @@
-import prisma from '~/db'
+import prisma from '~/db';
 
 export default defineEventHandler(async(event)  => {
     const { id } = getQuery(event);
@@ -9,13 +9,13 @@ export default defineEventHandler(async(event)  => {
         where: {
             movieId: Number(id)
         }
-    })
+    });
 
     return {...(await $fetch(`https://api.themoviedb.org/3/movie/${id}`, {
         headers: {
             Authorization: myAutoarization as string,
             accept: 'application/json'
         },
-    })), likes,};
+    })), likes};
 
 });

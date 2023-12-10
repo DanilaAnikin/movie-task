@@ -53,7 +53,6 @@ onMounted(async() => {
                 v-for="movie in movies"
                 :key="movie.id"
                 :movie="movie"
-                :likes="movie.likes"
                 :genres="genres!"
             />
         </div>

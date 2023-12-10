@@ -104,7 +104,7 @@ onMounted(async() => {
     </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="scss"></style>
 .movie-card {
     .movie-text {
         display: none;
