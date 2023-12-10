@@ -5,11 +5,16 @@ import { HeartIcon, StarIcon, ArrowRightCircleIcon } from '@heroicons/vue/24/sol
 import { useUser } from '~/store/idkNazev';
 
 const userStore = useUser();
+const router = useRouter();
 
 const props = defineProps<{
     movie: Movie,
-    genres: Genre[]
+    genres: Genre[],
+    likes: number
 }>();
+
+const likes = ref<number>(props.likes);
+
 const emit = defineEmits<{
     openMovie: [value: Movie]
 }>()
@@ -26,7 +31,7 @@ const getGenreNames = computed(() => {
     return genreNames;
 })
 
-const { data: likes } = await useFetch('/api/likes', {
+const { data: moviesLikes } = await useFetch('/api/likes', {
     query: {
         token: userStore.token
     }
@@ -34,9 +39,9 @@ const { data: likes } = await useFetch('/api/likes', {
 
 const likedMovies = ref<number[]>([]);
 
-if(likes.value){
-    for(let i=0; i<likes.value.length; i++) {
-        likedMovies.value.push(likes.value[i].movieId);
+if(moviesLikes.value) {
+    for(let i=0; i<moviesLikes.value.length; i++) {
+        likedMovies.value.push(moviesLikes.value[i].movieId);
     }
 }
 
@@ -61,7 +66,7 @@ onMounted(async() => {
     if(userStore.token){
         await userStore.loadUser();
     } else {
-        emit('not-logged');
+        router.push('/Login');
     }
 });
 
@@ -89,7 +94,10 @@ onMounted(async() => {
                 <span class="movie-text text-xs flex flex-wrap mt-2">{{ movie.overview }}</span>
                 <div class="movie-text-like justify-between mt-2 w-full">
                     <span v-if="movie.vote_average != 0" class="flex font-bold text-lg gap-1 items-center">{{ movie.vote_average.toFixed(1) }} <StarIcon :class="`h-5 w-5 ${ parseInt(movie.vote_average.toFixed(1), 10) >= 7 ? 'text-yellow-500' : parseInt(movie.vote_average.toFixed(1), 10) >= 6 ? 'text-slate-400' : 'text-yellow-800'}`" /></span>
-                    <HeartIcon @click="postLike()" :class="`h-6 w-6 ${ liked ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'} cursor-pointer`" />
+                    <div class="flex gap-1 items-center">
+                        <span class="text-sm font-bold">{{ likes }}</span>
+                        <HeartIcon @click="postLike(), liked ? likes += 1 : likes -= 1" :class="`h-6 w-6 ${ liked ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'} cursor-pointer`" />
+                    </div>
                 </div>
             </div>
         </div>

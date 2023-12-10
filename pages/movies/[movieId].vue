@@ -57,8 +57,8 @@ async function postLike() {
                 <div class="flex justify-between items-center">
                     <span class="text-4xl font-bold">{{ movie?.original_title }}</span>
                     <div class="flex gap-1 items-center">
-                        <span class="font-bold text-lg">36</span>
-                        <HeartIcon @click="postLike" :class="`h-10 w-10 cursor-pointer ${ liked ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'}`" />
+                        <span class="font-bold text-lg">{{ movie.likes }}</span>
+                        <HeartIcon @click="postLike(), liked ? movie.likes += 1 : movie.likes -= 1" :class="`h-10 w-10 cursor-pointer ${ liked ? 'text-red-600 hover:text-red-500' : 'text-slate-100 hover:text-red-400'}`" />
                     </div>
                 </div>
                 <span class="text-2xl text-slate-300">{{ movie?.overview }}</span>

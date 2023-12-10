@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { HeartIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline';
 import { useUser } from '../store/idkNazev';
-import { useRouter } from 'vue-router';
 
 const userStore = useUser();
 const router = useRouter();
-
-const emit = defineEmits(['not-logged']);
 
 const searchValue = ref<string>("");
 
 const {data: movies} = await useFetch('/api/popular');
 const {data: genres} = await useFetch('/api/genres');
+
 
 const movieOpened = ref<boolean>(false);
 
@@ -55,6 +53,7 @@ onMounted(async() => {
                 v-for="movie in movies"
                 :key="movie.id"
                 :movie="movie"
+                :likes="movie.likes"
                 :genres="genres!"
             />
         </div>

@@ -53,6 +53,7 @@ onMounted(async () => {
         <div class="flex flex-col gap-1">
           <input
             v-model="password"
+            v-on:keyup.enter="login"
             type="password"
             placeholder="Password"
             required="true"
