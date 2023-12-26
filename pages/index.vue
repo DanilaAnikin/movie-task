@@ -1,26 +1,58 @@
 <script setup lang="ts">
 import { HeartIcon, PaperAirplaneIcon } from '@heroicons/vue/24/outline';
 import { useUser } from '../store/idkNazev';
+import { Movie } from '~/types/movie';
 
 const userStore = useUser();
 const router = useRouter();
 
 const searchValue = ref<string>("");
 
-const {data: movies} = await useFetch('/api/popular');
-const {data: genres} = await useFetch('/api/genres');
-
+const { data: movies } = await useFetch('/api/popular', {
+    query: {
+        token: userStore.token,
+    }
+});
+const { data: genres } = await useFetch('/api/genres');
 
 const movieOpened = ref<boolean>(false);
 
 async function getMovies() {
-    const data = await $fetch('/api/search', {
-        query: {
-            query: searchValue.value ? searchValue.value : 'BROS' 
+    if(searchValue.value) {
+        movies.value = await useFetch('/api/search', {
+            query: {
+                query: searchValue.value 
+            }
+        });
+    } else {
+        movies.value = await useFetch('/api/popular', {
+            query: {
+                token: userStore.token
+            }
+        });
+    }
+
+    searchValue.value = '';
+}
+
+async function postLike(movie: Movie, liked: boolean) {
+    movie.liked = liked;
+
+    if(liked) {
+        movie.likes++
+    } else {
+        movie.likes --;
+    }
+
+    const token = userStore.token;
+
+    await $fetch('/api/auth/like', {
+        method: 'POST',
+        body: {
+            movieId: movie.id,
+            token
         }
     });
-    movies.value = data;
-    searchValue.value = '';
 }
 
 onMounted(async() => {
@@ -53,7 +85,9 @@ onMounted(async() => {
                 v-for="movie in movies"
                 :key="movie.id"
                 :movie="movie"
+                :likes="movie.likes"
                 :genres="genres!"
+                @post-like="postLike(movie, $event)"
             />
         </div>
     </div>

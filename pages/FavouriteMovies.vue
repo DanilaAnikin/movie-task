@@ -5,7 +5,13 @@ import { onMounted } from 'vue';
 
 const userStore = useUser();
 
-const { data: movies } = await useFetch('/api/popular');
+const { data: movies } = await useFetch('/api/favourite', {
+    query: {
+        token: userStore.token
+    }
+});
+console.log(movies.value);
+
 const { data: genres } = await useFetch('/api/genres');
 
 onMounted(async() => {
@@ -28,6 +34,7 @@ onMounted(async() => {
                 v-for="movie in movies"
                 :key="movie.id"
                 :movie="movie"
+                :likes="movie.likes"
                 :genres="genres!"
             />  
         </div>

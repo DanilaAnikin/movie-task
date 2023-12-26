@@ -9,19 +9,31 @@ generator client {
 }
 
 model User {
-  id          Int       @default(autoincrement()) @id
-  email       String    @db.VarChar(255) @unique
+  id          Int       @id @default(autoincrement())
+  email       String    @unique @db.VarChar(255)
   password    String    @db.Char(60)
   likes       Like[]
 }
 
 model Like {
-  id          Int       @default(autoincrement()) @id
+  id          Int       @id @default(autoincrement())
   userId      Int
   movieId     Int
   user        User      @relation(fields: [userId], references: [id])
+  movie       Movie     @relation(fields: [movieId], references: [id])
 
-  @@index([userId])
-  @@index([movieId])
   @@unique([userId, movieId])
+  @@index([userId, movieId])
+  @@index([movieId])
+}
+
+model Movie {
+  id          Int       @id
+  title       String
+  overview    String
+  genreIds    String
+  voteCount   Int
+  voteAverage Int
+  posterPath  String
+  Like        Like[]
 }
