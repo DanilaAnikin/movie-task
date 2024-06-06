@@ -20,7 +20,6 @@ const emit = defineEmits<{
 
 let genreNames = reactive<string[]>(props.movie.genre_ids.map((genre_id) => props.genres.find(({id}) => id === genre_id)!.name));
 
-
 onMounted(async() => {
     if(userStore.token){
         await userStore.loadUser();

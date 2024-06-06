@@ -10,10 +10,8 @@ export default defineEventHandler(async(event) => {
     const response = await prisma.like.findMany({
         where: {
             userId,
-        },
-        include: {
-            movie: true
         }
     });
     return response;
+    // Maybe if in need only movieIds, then can go this ===>  return response.map((like) => like.movieId)
 });
